@@ -26,3 +26,26 @@ func TestTemplateDataMap(t *testing.T) {
 	body, _ := io.ReadAll(recorder.Result().Body)
 	fmt.Println(string(body))
 }
+
+type page struct {
+	Title string
+	Name  string
+}
+
+func TemplateDataStruct(writer http.ResponseWriter, request *http.Request) {
+	t := template.Must(template.ParseFiles("./templates/name.gohtml"))
+	t.ExecuteTemplate(writer, "name.gohtml", page{
+		Title: "Template Data Struct",
+		Name:  "Yusuf",
+	})
+}
+
+func TestTemplateDataStruct(t *testing.T) {
+	request := httptest.NewRequest(http.MethodGet, "http://localhost:9090", nil)
+	recorder := httptest.NewRecorder()
+
+	TemplateDataStruct(recorder, request)
+
+	body, _ := io.ReadAll(recorder.Result().Body)
+	fmt.Println(string(body))
+}
