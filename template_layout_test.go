@@ -15,7 +15,7 @@ func TemplateLayout(writer http.ResponseWriter, request *http.Request) {
 		"./templates/footer.gohtml",
 		"./templates/layout.gohtml",
 	))
-	t.ExecuteTemplate(writer, "layout.gohtml", map[string]interface{}{
+	t.ExecuteTemplate(writer, "layout", map[string]interface{}{
 		"Title": "Template Layout",
 		"Name":  "Yusuf",
 	})
