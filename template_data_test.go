@@ -27,16 +27,23 @@ func TestTemplateDataMap(t *testing.T) {
 	fmt.Println(string(body))
 }
 
-type page struct {
-	Title string
-	Name  string
+type Address struct {
+	Street string
+}
+type Page struct {
+	Title   string
+	Name    string
+	Address Address
 }
 
 func TemplateDataStruct(writer http.ResponseWriter, request *http.Request) {
 	t := template.Must(template.ParseFiles("./templates/name.gohtml"))
-	t.ExecuteTemplate(writer, "name.gohtml", page{
+	t.ExecuteTemplate(writer, "name.gohtml", Page{
 		Title: "Template Data Struct",
 		Name:  "Yusuf",
+		Address: Address{
+			Street: "Jl. Jendral Sudirman",
+		},
 	})
 }
 
