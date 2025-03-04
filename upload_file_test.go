@@ -68,7 +68,7 @@ func TestUploadFile(t *testing.T) {
 
 	writer := multipart.NewWriter(body)
 	writer.WriteField("name", "Miyawaki Sakura")
-	file, _ := writer.CreateFormFile("file", "CONTOHUPLOAD.png")
+	file, _ := writer.CreateFormFile("file", "CONTOHUPLOAD.jpeg")
 	file.Write(uploadFileTest)
 	writer.Close()
 
