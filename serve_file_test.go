@@ -1,20 +1,48 @@
 package belajar_golang_web
 
 import (
+	_ "embed"
+	"fmt"
 	"net/http"
 	"testing"
 )
 
-func ServeFile(write http.ResponseWriter, request *http.Request) {
+func ServeFile(writer http.ResponseWriter, request *http.Request) {
 	if request.URL.Query().Get("name") != "" {
-		http.ServeFile(write, request, "./resources/ok.html")
+		http.ServeFile(writer, request, "./resources/ok.html")
 		return
 	} else {
-		http.ServeFile(write, request, "./resources/notfound.html")
+		http.ServeFile(writer, request, "./resources/notfound.html")
 	}
 }
 
 func TestServeFileServer(t *testing.T) {
+	server := http.Server{
+		Addr:    "localhost:9090",
+		Handler: http.HandlerFunc(ServeFile),
+	}
+
+	err := server.ListenAndServe()
+	if err != nil {
+		panic(err)
+	}
+}
+
+//go:embed resources/ok.html
+var resourcesOk string
+
+//go:embed resources/notfound.html
+var resourcesNotFound string
+
+func ServeFileEmbed(writer http.ResponseWriter, request *http.Request) {
+	if request.URL.Query().Get("name") != "" {
+		fmt.Fprint(writer, resourcesOk)
+	} else {
+		fmt.Fprint(writer, resourcesNotFound)
+	}
+}
+
+func TestServeFileServerEmbed(t *testing.T) {
 	server := http.Server{
 		Addr:    "localhost:9090",
 		Handler: http.HandlerFunc(ServeFile),
